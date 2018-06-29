@@ -31,6 +31,9 @@ class Jsedis{
 		});
 		return true;
 	}
+	exists(key){
+		return this.store.hasOwnProperty(key);
+	}
 }
 
 var j=new Jsedis();
