@@ -1,15 +1,34 @@
+class JString{
+	constructor(){
+		this.key="";
+	}
+	static isInstance(object){
+		return object.constructor==JString.constructor;
+	}
+	append(value){
+		if(!['string','number'].includes(typeof(value))){
+			console.error(`Unsupported type ${typeof(value)} for append action`);
+			return false;
+		}
+		this.key+=value;
+		return this.key.length;
+	}
+}
 class Jsedis{
+
 	constructor(){
 		this.store={};
 		this.channels={};
 	}
 	append(key,value){
-		if(['string','number'].includes(typeof(value))){
-			this.store.key="";
-			this.store.key+=value;
-			return value.length;
+		if(!this.store.hasOwnProperty(key)){
+			this.store[key]=new JString();
 		}
-		console.error(`Type ${typeof(value)} not supported for append`)
+		if(JString.isInstance(this.store[key])){
+			console.error(`WRONGTYPE Operation against a key holding the wrong kind of value`);
+			return false;
+		}
+		return this.store[key].append(value);
 	}
 	subscribe(channel,callback){
 		if(typeof(callback)!="function"){
