@@ -14,6 +14,24 @@ class JString{
 		return this.key.length;
 	}
 }
+class JHash{
+	constructor(){
+		this.key={};
+	}
+	hset(field,value){
+		this.key[field]=value;
+	}
+	hmset(...args){
+		let fieldValues=[...args];
+		if(fieldValues.length==0||fieldValues.length%2==1){
+			console.error('ERR wrong number of arguments for HMSET');
+			return false;
+		}
+		for(let i=0;i<fieldValues.length/2;i++){
+			this.key[fieldValues[i]]=fieldValues[i+1];
+		}
+	}
+}
 class Jsedis{
 
 	constructor(){
